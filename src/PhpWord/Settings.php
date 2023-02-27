@@ -187,10 +187,24 @@ class Settings
      *
      * @return bool Success or failure
      */
-    public static function setPdfRenderer(string $libraryName, string $libraryBaseDir): bool
+    public static function setPdfRenderer(string $libraryName, ?string $libraryBaseDir = null): bool
     {
         if (!self::setPdfRendererName($libraryName)) {
             return false;
+        }
+
+        switch ($libraryName) {
+            case Settings::PDF_RENDERER_DOMPDF:
+                $libraryBaseDir = $libraryBaseDir ?: \Dompdf\Dompdf::class;
+                break;
+            case Settings::PDF_RENDERER_TCPDF:
+                $libraryBaseDir = $libraryBaseDir ?: \TCPDF::class;
+                break;
+            case Settings::PDF_RENDERER_MPDF:
+                $libraryBaseDir = $libraryBaseDir ?: \Mpdf\Mpdf::class;
+                break;
+            default:
+                return false;
         }
 
         return self::setPdfRendererPath($libraryBaseDir);

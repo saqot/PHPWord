@@ -53,8 +53,12 @@ class PDF
         }
 
         $rendererName = static::class . '\\' . $pdfLibraryName;
-        $this->renderer = new $rendererName($phpWord);
+        $renderer = new $rendererName($phpWord);
+        if ($renderer instanceof \Dompdf\Dompdf) {
+            $renderer->setOptions((new \Dompdf\Options())->set('defaultFont', Settings::getDefaultFontName()));
+        }
 
+        $this->renderer = new $rendererName($phpWord);
     }
 
     /**

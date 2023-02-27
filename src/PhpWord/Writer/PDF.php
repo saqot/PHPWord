@@ -54,6 +54,7 @@ class PDF
 
         $rendererName = static::class . '\\' . $pdfLibraryName;
         $this->renderer = new $rendererName($phpWord);
+
     }
 
     /**
